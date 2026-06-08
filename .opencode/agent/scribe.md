@@ -1,7 +1,6 @@
 ---
 description: Knowledge archivist for cross-session context preservation
 mode: subagent
-model: 9router/gpt-5.5
 temperature: 0.1
 tools:
   write: true

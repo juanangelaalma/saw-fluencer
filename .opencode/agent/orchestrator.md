@@ -1,6 +1,5 @@
 ---
 description: Delivery lead who orchestrates Laravel execution through delegation
-model: 9router/gpt-5.5
 mode: primary
 temperature: 0.1
 tools:

@@ -1,7 +1,6 @@
 ---
 description: External documentation researcher for libraries, frameworks, and APIs
 mode: subagent
-model: 9router/gpt-5.5
 temperature: 0.1
 tools:
   webfetch: true

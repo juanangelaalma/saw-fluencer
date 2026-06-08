@@ -39,8 +39,8 @@ Validates implementation outcomes after each wave. Compares results against the 
 ### `@build` — Generic implementation
 The generic implementer. **Copy this file** to create stack-specific agents (`backend.md`, `frontend.md`, `mobile.md`, etc.) for your project. Fill in the verification commands (`{project test command}`, `{project lint command}`, `{project build command}`) with real commands for your stack.
 
-### `@web` — Frontend implementation (this repo)
-Stack-specific implementer for laravel 13 project. Owns components, pages, hooks, styles. Verifies via `./vendor/bin/sail npm run build`.
+### `@laravel` — laravel implementation (this repo)
+Stack-specific implementer for laravel 13 project. Owns models, migrations, controllers, routes, views, styles.
 
 ### `@curator` — Documentation maintenance
 Keeps documentation in sync with code changes. Invoked by `@orchestrator` after implementation work lands.
@@ -64,4 +64,4 @@ Archives completed plans and notepads to `.opencode/context/archive/` for cross-
 
 - **Read-only agents** (explore, librarian, analyst, strategist, auditor, reviewer, curator, scribe) have `write: deny`, `edit: deny`, `bash: deny`. They produce reports.
 - **Planning agents** (architect) can write only to `.opencode/context/`.
-- **Implementation agents** (build and your stack-specific clones like `@api`, `@web`) can write code, run bash for verification, but should respect file-scope from the delegation. Stack-specific clones (`@api`, `@web`) additionally restrict their `permission.edit` frontmatter to their owned workspace (`apps/api/**` or `apps/web/**`) and `ask` for paths outside it.
+- **Implementation agents** (build and your stack-specific clones like `@laravel`) can write code, run bash for verification, but should respect file-scope from the delegation. Stack-specific clones (`@laravel`) additionally restrict their `permission.edit`

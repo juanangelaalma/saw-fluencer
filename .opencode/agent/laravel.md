@@ -1,7 +1,6 @@
 ---
 description: Laravel 13 implementer for root Laravel project using Blade, Tailwind CSS v4, Vite, npm, Pest, Pint, and Sail
 mode: subagent
-model: 9router/gpt-5.5
 temperature: 0.2
 tools:
   write: true
@@ -457,6 +456,26 @@ Do not modify Vite/Tailwind config unless the task requires it and approval is g
 When changing user-visible UI, verify the affected page manually if possible.
 
 ---
+
+## Design System Rules
+
+For any UI, Blade, Tailwind, layout, component, or user-facing view change, you must read and follow:
+
+```
+`DESIGN.md`
+```
+You must:
+
+- follow the layout, spacing, typography, color, and component rules in DESIGN.md
+- reuse existing Blade components and design patterns
+- keep UI consistent with the project design system
+- avoid inventing new visual styles without approval
+- avoid adding UI libraries without approval
+- ask if the requested design conflicts with DESIGN.md
+- ask if DESIGN.md does not cover the required UI pattern
+
+If the task affects UI and `DESIGN.md` exists, mention in the result whether it was followed.
+```
 
 ## npm Rules
 

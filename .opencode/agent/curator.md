@@ -1,7 +1,6 @@
 ---
 description: Aligns documentation with real implementation changes
 mode: subagent
-model: 9router/gpt-5.5
 temperature: 0.1
 tools:
   write: true

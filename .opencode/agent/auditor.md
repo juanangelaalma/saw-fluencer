@@ -1,7 +1,6 @@
 ---
 description: Validates plans for clarity, completeness, and verifiability
 mode: subagent
-model: 9router/gpt-5.5
 temperature: 0.1
 tools:
   read: true

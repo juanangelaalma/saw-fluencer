@@ -1,7 +1,6 @@
 ---
 description: Pre-planning analyst for risks, ambiguities, scope, and architecture review
 mode: subagent
-model: 9router/gpt-5.5
 temperature: 0.1
 permission:
   "*": deny

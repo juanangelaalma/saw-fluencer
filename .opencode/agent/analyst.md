@@ -1,7 +1,6 @@
 ---
 description: Reviews plans for optimality — validates the chosen approach is the best of plausible alternatives, identifies hidden risks, and flags over/under-engineering before execution begins. User-invoked.
 mode: subagent
-model: 9router/gpt-5.5
 temperature: 0.1
 permission:
   "*": deny

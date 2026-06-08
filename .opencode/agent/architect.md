@@ -1,7 +1,6 @@
 ---
 description: Planning lead who clarifies requirements and produces execution plans
 mode: primary
-model: 9router/gpt-5.5
 temperature: 0.1
 permission:
   "*": deny

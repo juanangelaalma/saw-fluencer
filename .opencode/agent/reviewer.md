@@ -1,7 +1,6 @@
 ---
 description: Validates implementation against plan requirements after each wave
 mode: subagent
-model: 9router/gpt-5.5
 temperature: 0.1
 tools:
   read: true

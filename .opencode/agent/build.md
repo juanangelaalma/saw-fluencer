@@ -1,16 +1,6 @@
-Siap. Saya sesuaikan `build.md` kamu supaya perannya jadi **general fallback agent**, bukan lagi primary implementer semua code. Di file lama masih ada kalimat “there are no language-specific subagents” dan “@build owns all code-modifying work”, padahal sekarang kamu sudah punya `@laravel`. Jadi itu perlu diganti supaya `@build` tidak bentrok dengan `@laravel`. 
-
-Pakai versi ini untuk:
-
-```txt
-.opencode/agent/build.md
-```
-
-````md
 ---
 description: General fallback build agent for tooling, docs, workflow, and repository maintenance
 mode: primary
-model: 9router/gpt-5.5
 temperature: 0.2
 tools:
   write: true

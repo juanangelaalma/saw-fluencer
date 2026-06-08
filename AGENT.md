@@ -44,6 +44,17 @@
 | DB_CONNECTION | Database driver         | Yes      |
 | DB_DATABASE   | Database name           | Yes      |
 
+## Design System
+
+All UI work must follow [`DESIGN.md`](DESIGN.md).
+
+Rules:
+- Read `DESIGN.md` before planning or implementing UI changes.
+- Follow defined layout, spacing, typography, colors, components, and interaction patterns.
+- Do not introduce new visual patterns unless explicitly approved.
+- If a requested UI conflicts with `DESIGN.md`, stop and ask for clarification.
+- If `DESIGN.md` is incomplete for the requested UI, ask before inventing a new pattern.
+
 ## See Also
 
 * [CRUD Guide](docs/CRUD.md)

@@ -1,7 +1,6 @@
 ---
 description: Codebase exploration specialist for research and discovery
 mode: subagent
-model: 9router/gpt-5.5
 temperature: 0.1
 tools:
   read: true
