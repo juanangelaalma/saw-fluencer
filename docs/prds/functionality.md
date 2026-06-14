@@ -124,10 +124,9 @@ Membangun **Sistem Pendukung Keputusan (SPK)** berbasis web menggunakan metode *
 > *Sebagai Admin, saya ingin bisa menginput data influencer satu per satu melalui form, agar saya bisa menambah atau mengoreksi data individu dengan mudah.*
 
 **Acceptance Criteria:**
-- [ ] Form input memiliki field: Nama Influencer, Username, Engagement Rate (%), Jumlah Follower, Jumlah Like, Jumlah Komentar, Rate Card (Rp), Niche (multi-select)
+- [ ] Form input memiliki field: Nama Influencer, Username, Engagement Rate (%), Jumlah Follower, Rata-rata Like, Rata-rata Komentar, Rate Card (Rp), Rata-rata Penonton Reel
 - [ ] Field Engagement Rate hanya menerima input numerik dengan format persen
 - [ ] Field Rate Card hanya menerima input angka (format Rupiah ditampilkan otomatis)
-- [ ] Field Niche menggunakan checkbox multi-select dengan pilihan: Fashion, Lifestyle, Religi, Budaya, Komunitas, Event, Entertainment, dan lainnya
 - [ ] Setelah simpan, sistem otomatis mengkonversi nilai ke skala Likert dan menampilkan preview hasilnya
 
 ---

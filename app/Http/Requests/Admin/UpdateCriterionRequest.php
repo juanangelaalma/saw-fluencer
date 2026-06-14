@@ -20,7 +20,7 @@ class UpdateCriterionRequest extends FormRequest
 
         return [
             'code' => ['required', 'string', 'max:10', 'alpha_dash', Rule::unique(Criterion::class, 'code')->ignore($criterion)],
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', Rule::unique(Criterion::class, 'name')->ignore($criterion)],
             'weight' => ['required', 'integer', 'min:0', 'max:100'],
             'type' => ['required', Rule::in([Criterion::TYPE_BENEFIT, Criterion::TYPE_COST])],
         ];

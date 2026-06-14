@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\CriterionController;
+use App\Http\Controllers\Admin\InfluencerController;
+use App\Http\Controllers\Admin\InfluencerImportController;
 use App\Http\Controllers\Admin\SubCriterionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Models\User;
@@ -30,6 +32,11 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::resource('criteria', CriterionController::class)->except(['show']);
         Route::get('criteria/{criterion}/sub-criteria', [SubCriterionController::class, 'edit'])->name('criteria.sub-criteria.edit');
         Route::put('criteria/{criterion}/sub-criteria', [SubCriterionController::class, 'update'])->name('criteria.sub-criteria.update');
+        Route::resource('influencers', InfluencerController::class)->except(['show']);
+        Route::get('influencers-import', [InfluencerImportController::class, 'create'])->name('influencers.import.create');
+        Route::get('influencers-import/template', [InfluencerImportController::class, 'template'])->name('influencers.import.template');
+        Route::post('influencers-import/preview', [InfluencerImportController::class, 'preview'])->name('influencers.import.preview');
+        Route::post('influencers-import', [InfluencerImportController::class, 'store'])->name('influencers.import.store');
     });
 });
 

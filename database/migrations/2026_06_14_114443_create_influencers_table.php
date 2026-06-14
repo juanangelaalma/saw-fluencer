@@ -8,18 +8,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('criteria', function (Blueprint $table) {
+        Schema::create('influencers', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 10)->unique();
-            $table->string('name')->unique();
-            $table->unsignedTinyInteger('weight');
-            $table->string('type');
+            $table->string('name');
+            $table->string('username')->unique();
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('criteria');
+        Schema::dropIfExists('influencers');
     }
 };

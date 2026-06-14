@@ -3,6 +3,7 @@
     $dashboardActive = request()->routeIs('dashboard', 'admin.dashboard', 'manager.dashboard');
     $usersActive = request()->routeIs('admin.users.*');
     $criteriaActive = request()->routeIs('admin.criteria.*');
+    $influencersActive = request()->routeIs('admin.influencers.*');
 @endphp
 
 <aside class="sidebar" aria-label="{{ __('Navigasi Utama') }}">
@@ -30,6 +31,12 @@
         @if ($user->isAdmin() && Route::has('admin.criteria.index'))
             <a href="{{ route('admin.criteria.index') }}" @class(['active' => $criteriaActive])>
                 <span>{{ __('Manajemen Kriteria') }}</span>
+            </a>
+        @endif
+
+        @if ($user->isAdmin() && Route::has('admin.influencers.index'))
+            <a href="{{ route('admin.influencers.index') }}" @class(['active' => $influencersActive])>
+                <span>{{ __('Manajemen Influencer') }}</span>
             </a>
         @endif
     </nav>
@@ -81,6 +88,12 @@
         @if ($user->isAdmin() && Route::has('admin.criteria.index'))
             <a href="{{ route('admin.criteria.index') }}" @class(['pill', 'active' => $criteriaActive])>
                 {{ __('Manajemen Kriteria') }}
+            </a>
+        @endif
+
+        @if ($user->isAdmin() && Route::has('admin.influencers.index'))
+            <a href="{{ route('admin.influencers.index') }}" @class(['pill', 'active' => $influencersActive])>
+                {{ __('Manajemen Influencer') }}
             </a>
         @endif
     </nav>
