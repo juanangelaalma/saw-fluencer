@@ -69,6 +69,8 @@
     .hint { font-size: 13px; }
     .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
+    .page-stack { display: grid; gap: 24px; }
+    .page-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
     .actions { display: flex; flex-wrap: wrap; gap: 10px; }
     .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid transparent; background: transparent; border-radius: 10px; padding: 10px 14px; color: var(--fg); cursor: pointer; font-weight: 520; }
     .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
@@ -76,6 +78,13 @@
     .btn-danger { background: var(--danger); border-color: var(--danger); color: var(--surface); }
     .btn-ghost { color: var(--muted); padding-inline: 6px; }
     .btn:hover { transform: translateY(-1px); }
+    .table-actions { display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
+    .table-action { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface); color: var(--fg); padding: 7px 10px; cursor: pointer; font-size: 12px; font-weight: 520; line-height: 1; white-space: nowrap; }
+    .table-action:hover { background: var(--fg-soft); transform: translateY(-1px); }
+    .table-action-edit { border-color: color-mix(in oklch, var(--accent) 26%, var(--border)); color: var(--accent); }
+    .table-action-edit:hover { background: var(--accent-soft); }
+    .table-action-danger { border-color: color-mix(in oklch, var(--danger) 28%, var(--border)); color: var(--danger); }
+    .table-action-danger:hover { background: color-mix(in oklch, var(--danger) 8%, transparent); }
     .field { display: grid; gap: 7px; }
     .field label, .label, .field-label { color: var(--muted); font-size: 13px; }
     .input, .select, .textarea { width: 100%; min-height: 44px; border: 1px solid var(--border); background: var(--surface); color: var(--fg); border-radius: 10px; padding: 11px 12px; }

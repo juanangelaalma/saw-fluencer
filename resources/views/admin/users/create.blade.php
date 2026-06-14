@@ -3,9 +3,9 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('Tambah Pengguna') }}</h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white p-6 shadow-sm sm:rounded-lg">
+    <div class="page-stack">
+        <div>
+            <div class="page-card">
                 <form method="POST" action="{{ route('admin.users.store') }}">
                     @include('admin.users._form', ['submit' => __('Simpan')])
                 </form>

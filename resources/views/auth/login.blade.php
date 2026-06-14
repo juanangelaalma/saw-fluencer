@@ -2,7 +2,7 @@
     <div class="mb-8">
         <p class="eyebrow">Login</p>
         <h2 class="mt-3">Masuk</h2>
-        <p class="hint mt-3">Masukkan username dan password. Jika gagal masuk, periksa kembali kredensial atau hubungi admin.</p>
+        <p class="hint mt-3">Masukkan username dan password. Setelah 5 percobaan gagal, akses login dikunci sementara selama 10 menit.</p>
     </div>
 
     <x-auth-session-status class="mb-4" :status="session('status')" />
