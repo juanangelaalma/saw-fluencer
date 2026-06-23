@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <div>
+            <div class="mr-6">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight mr-3">{{ __('Manajemen Kriteria') }}</h2>
                 <p class="mt-1 text-sm {{ $weightTotal <= 100 ? 'text-green-700' : 'text-red-700' }}">Total bobot: {{ $weightTotal }}% / maksimal 100%</p>
             </div>

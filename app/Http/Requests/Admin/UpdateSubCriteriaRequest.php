@@ -26,7 +26,7 @@ class UpdateSubCriteriaRequest extends FormRequest
     public function after(): array
     {
         return [function (Validator $validator): void {
-            $levels = collect($this->input('sub_criteria', []))->pluck('level')->sort()->values()->all();
+            $levels = collect($this->input('sub_criteria', []))->pluck('level')->map(fn ($level) => (int) $level)->sort()->values()->all();
 
             if ($levels !== [1, 2, 3, 4, 5]) {
                 $validator->errors()->add('sub_criteria', 'Sub kriteria harus memiliki level 1 sampai 5.');
