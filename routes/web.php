@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\InfluencerController;
 use App\Http\Controllers\Admin\InfluencerImportController;
 use App\Http\Controllers\Admin\SubCriterionController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\SawController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,8 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'active'])->group(function () {
     Route::view('/admin/dashboard', 'admin.dashboard')->name('admin.dashboard');
     Route::view('/manager/dashboard', 'manager.dashboard')->name('manager.dashboard');
+    Route::get('/admin/saw', [SawController::class, 'index'])->middleware('admin')->name('admin.saw.index');
+    Route::get('/manager/saw', [SawController::class, 'index'])->name('manager.saw.index');
 
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::resource('users', UserController::class)->except(['show', 'destroy']);
