@@ -13,20 +13,21 @@
 
 <div x-data="{
     raw: @js((string) $rawValue),
-    format(value) {
-        const normalized = String(value ?? '').replace(/[^0-9,.]/g, '').replace(',', '.');
-        const parts = normalized.split('.');
+    parse(value) {
+        const parts = String(value ?? '').replace(/[^0-9,]/g, '').split(',');
         const integer = (parts.shift() ?? '').replace(/\D/g, '');
         const decimal = parts.join('').replace(/\D/g, '');
+
+        return { integer, decimal };
+    },
+    format(value) {
+        const { integer, decimal } = this.parse(value);
         const formatted = integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
         return decimal.length > 0 ? `${formatted},${decimal}` : formatted;
     },
     clean(value) {
-        const normalized = String(value ?? '').replace(/[^0-9,.]/g, '').replace(',', '.');
-        const parts = normalized.split('.');
-        const integer = (parts.shift() ?? '').replace(/\D/g, '');
-        const decimal = parts.join('').replace(/\D/g, '');
+        const { integer, decimal } = this.parse(value);
 
         return decimal.length > 0 ? `${integer}.${decimal}` : integer;
     }
