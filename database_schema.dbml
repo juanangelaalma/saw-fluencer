@@ -1,0 +1,63 @@
+Table users {
+  id bigint [primary key, increment]
+  name varchar
+  username varchar [unique]
+  password varchar
+  role varchar
+  is_active boolean [default: true]
+  remember_token varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table criteria {
+  id bigint [primary key, increment]
+  code varchar(10) [unique]
+  name varchar [unique]
+  weight tinyint
+  type varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table sub_criteria {
+  id bigint [primary key, increment]
+  criterion_id bigint
+  level tinyint
+  label varchar
+  min_value decimal(15,2) [null]
+  max_value decimal(15,2) [null]
+  created_at timestamp
+  updated_at timestamp
+
+  indexes {
+    (criterion_id, level) [unique]
+  }
+}
+
+Table influencers {
+  id bigint [primary key, increment]
+  name varchar
+  username varchar [unique]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table influencer_scores {
+  id bigint [primary key, increment]
+  influencer_id bigint
+  criterion_id bigint
+  raw_value decimal(15,2)
+  likert_value tinyint
+  created_at timestamp
+  updated_at timestamp
+
+  indexes {
+    (influencer_id, criterion_id) [unique]
+  }
+}
+
+// Relasi antar tabel
+Ref: sub_criteria.criterion_id > criteria.id
+Ref: influencer_scores.influencer_id > influencers.id
+Ref: influencer_scores.criterion_id > criteria.id
