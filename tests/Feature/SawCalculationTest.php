@@ -66,46 +66,82 @@ it('calculates saw normalization scores and rankings', function () {
         ->and($rows->get('a2')['rank'])->toBe(3);
 });
 
-it('allows admin and manager to view saw calculation', function (string $roleFactory, string $routeName) {
-    $user = User::factory()->{$roleFactory}()->create();
-    $criteria = createSawCriteria();
-    createSawInfluencer('A1', 'a1', $criteria, [5, 1, 1, 1, 1, 5]);
-
-    $this->actingAs($user)
-        ->get(route($routeName))
-        ->assertOk()
-        ->assertSee('Perhitungan SAW')
-        ->assertSee('A1')
-        ->assertSee('1')
-        ->assertDontSee('1,0000');
-})->with([
-    ['admin', 'admin.saw.index'],
-    ['manajer', 'manager.saw.index'],
-]);
-
-it('limits saw rows to ten by default and allows limit option', function () {
+it('keeps displayed criterion values aligned with their headers', function () {
     $user = User::factory()->admin()->create();
     $criteria = createSawCriteria();
+    $selected = [
+        createSawInfluencer('A1', 'a1', $criteria, [5, 1, 2, 3, 4, 5]),
+        createSawInfluencer('A2', 'a2', $criteria, [1, 2, 3, 4, 5, 1]),
+    ];
+
+    $response = $this->actingAs($user)
+        ->get(route('admin.saw.index', ['selected' => array_map(fn (Influencer $influencer) => $influencer->id, $selected)]))
+        ->assertOk();
+
+    $document = new DOMDocument();
+    $previousLibxmlState = libxml_use_internal_errors(true);
+    $document->loadHTML($response->getContent());
+    libxml_clear_errors();
+    libxml_use_internal_errors($previousLibxmlState);
+
+    $xpath = new DOMXPath($document);
+    $conversionTable = $xpath->query('//h3[contains(normalize-space(.), "Konversi Nilai Input")]/following::table[1]')->item(0);
+    $conversionRows = $xpath->query('.//tbody/tr', $conversionTable);
+    $targetCells = null;
+
+    foreach ($conversionRows as $row) {
+        $cells = iterator_to_array($xpath->query('./td', $row));
+
+        if (trim($cells[1]->textContent) === 'a1') {
+            $targetCells = $cells;
+
+            break;
+        }
+    }
+
+    expect($targetCells)->not->toBeNull();
+
+    $displayedValues = array_map(
+        fn (DOMElement $cell): string => explode(' input → rating', trim(preg_replace('/\\s+/u', ' ', $cell->textContent)), 2)[0],
+        array_slice($targetCells, 2),
+    );
+
+    expect($displayedValues)->toBe([
+        '5,00 → 5',
+        '1,00 → 1',
+        '2,00 → 2',
+        '3,00 → 3',
+        '4,00 → 4',
+        '5,00 → 5',
+    ]);
+});
+
+
+
+it('limits selected saw rows to ten by default and allows limit option', function () {
+    $user = User::factory()->admin()->create();
+    $criteria = createSawCriteria();
+    $ids = [];
 
     foreach (range(1, 11) as $index) {
-        createSawInfluencer(sprintf('A%02d', $index), sprintf('a%02d', $index), $criteria, [5, 1, 1, 1, 1, 5]);
+        $ids[] = createSawInfluencer(sprintf('A%02d', $index), sprintf('a%02d', $index), $criteria, [5, 1, 1, 1, 1, 5])->id;
     }
 
     $this->actingAs($user)
-        ->get(route('admin.saw.index'))
+        ->get(route('admin.saw.index', ['selected' => $ids]))
         ->assertOk()
         ->assertSee('Menampilkan 10 dari 11 data')
         ->assertSee('A10')
         ->assertDontSee('A11');
 
     $this->actingAs($user)
-        ->get(route('admin.saw.index', ['limit' => 25]))
+        ->get(route('admin.saw.index', ['limit' => 25, 'selected' => $ids]))
         ->assertOk()
         ->assertSee('Menampilkan 11 dari 11 data')
         ->assertSee('A11');
 
     $this->actingAs($user)
-        ->get(route('admin.saw.index', ['limit' => 'all']))
+        ->get(route('admin.saw.index', ['limit' => 'all', 'selected' => $ids]))
         ->assertOk()
         ->assertSee('Menampilkan 11 dari 11 data')
         ->assertSee('Semua')

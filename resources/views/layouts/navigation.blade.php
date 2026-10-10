@@ -4,8 +4,7 @@
     $usersActive = request()->routeIs('admin.users.*');
     $criteriaActive = request()->routeIs('admin.criteria.*');
     $influencersActive = request()->routeIs('admin.influencers.*');
-    $sawActive = request()->routeIs('admin.saw.*', 'manager.saw.*');
-    $sawRoute = $user->isAdmin() ? 'admin.saw.index' : 'manager.saw.index';
+    $historyActive = request()->routeIs('saw.history.*');
 @endphp
 
 <aside class="sidebar" aria-label="{{ __('Navigasi Utama') }}">
@@ -42,9 +41,10 @@
             </a>
         @endif
 
-        @if (Route::has($sawRoute))
-            <a href="{{ route($sawRoute) }}" @class(['active' => $sawActive])>
-                <span>{{ __('Perhitungan SAW') }}</span>
+
+        @if (Route::has('saw.history.index'))
+            <a href="{{ route('saw.history.index') }}" @class(['active' => $historyActive])>
+                <span>{{ __('Riwayat Perhitungan') }}</span>
             </a>
         @endif
     </nav>
@@ -105,9 +105,10 @@
             </a>
         @endif
 
-        @if (Route::has($sawRoute))
-            <a href="{{ route($sawRoute) }}" @class(['pill', 'active' => $sawActive])>
-                {{ __('Perhitungan SAW') }}
+
+        @if (Route::has('saw.history.index'))
+            <a href="{{ route('saw.history.index') }}" @class(['pill', 'active' => $historyActive])>
+                {{ __('Riwayat Perhitungan') }}
             </a>
         @endif
     </nav>

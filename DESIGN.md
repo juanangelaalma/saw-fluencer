@@ -125,7 +125,7 @@ Prototype scope includes six screens/sections:
 - Admin can create/edit/delete users, criteria, sub-criteria, influencer data, and run SAW.
 - Manajer can view dashboard/results and export PDF; results are read-only.
 - Total criteria weight must equal `100%`; if not, disable save/count action.
-- SAW calculation requires at least 2 active influencers and total weight `100%`.
+- SAW calculation requires at least 2 checked influencers and total weight `100%`.
 - Import behavior: valid rows processed, invalid rows flagged, duplicate usernames skipped.
 - Export filename format: `Ranking_Influencer_[YYYY-MM-DD].pdf`.
 

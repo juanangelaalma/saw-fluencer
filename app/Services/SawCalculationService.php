@@ -8,11 +8,16 @@ use Illuminate\Support\Collection;
 
 class SawCalculationService
 {
-    public function calculate(): array
+    /**
+     * @param  array<int, int>|null  $onlyInfluencerIds
+     * @return array<string, mixed>
+     */
+    public function calculate(?array $onlyInfluencerIds = null): array
     {
         $criteria = Criterion::query()->orderBy('code')->get();
         $influencers = Influencer::query()
             ->with(['scores' => fn ($query) => $query->with('criterion')])
+            ->when($onlyInfluencerIds !== null, fn ($query) => $query->whereIn('id', $onlyInfluencerIds))
             ->orderBy('name')
             ->orderBy('username')
             ->get();
@@ -31,6 +36,38 @@ class SawCalculationService
             'criteria' => $criteria,
             'divisors' => $divisors,
             'rows' => $rows,
+        ];
+    }
+
+    /**
+     * Ubah hasil perhitungan menjadi struktur sederhana untuk disimpan di riwayat.
+     *
+     * @param  array<string, mixed>  $result
+     * @return array<string, mixed>
+     */
+    public function buildPayload(array $result): array
+    {
+        return [
+            'criteria' => $result['criteria']->map(fn (Criterion $criterion): array => [
+                'code' => $criterion->code,
+                'name' => $criterion->name,
+                'weight' => $criterion->weight,
+                'type' => $criterion->type,
+                'type_label' => $criterion->typeLabel(),
+                'divisor' => $result['divisors'][$criterion->id] ?? 0,
+            ])->values()->all(),
+            'rows' => array_map(fn (array $row): array => [
+                'rank' => $row['rank'],
+                'name' => $row['influencer']->name,
+                'username' => $row['influencer']->username,
+                'score' => $row['score'],
+                'criteria_scores' => array_values(array_map(fn (array $score): array => [
+                    'raw' => $score['raw'],
+                    'likert' => $score['likert'],
+                    'normalized' => $score['normalized'],
+                    'weighted' => $score['weighted'],
+                ], $row['criteria_scores'])),
+            ], $result['rows']),
         ];
     }
 

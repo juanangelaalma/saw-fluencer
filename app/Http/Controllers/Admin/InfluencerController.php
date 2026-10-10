@@ -9,20 +9,51 @@ use App\Models\Criterion;
 use App\Models\Influencer;
 use App\Services\InfluencerScoreService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class InfluencerController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
+        $selectedIds = $this->resolveSelectedIds($request);
+
+        if ($selectedIds !== []) {
+            $selectedIds = Influencer::query()->whereKey($selectedIds)->pluck('id')->all();
+        }
+
+        $influencers = Influencer::query()
+            ->with('scores.criterion')
+            ->orderBy('name')
+            ->orderBy('username')
+            ->paginate(15);
+
+        if ($selectedIds !== []) {
+            $influencers->appends(['selected' => $selectedIds]);
+        }
+
         return view('admin.influencers.index', [
             'criteria' => Criterion::query()->orderBy('name')->get(),
-            'influencers' => Influencer::query()
-                ->with('scores.criterion')
-                ->orderBy('name')
-                ->orderBy('username')
-                ->paginate(15),
+            'influencers' => $influencers,
+            'selectedIds' => $selectedIds,
         ]);
+    }
+
+    /**
+     * @return array<int, int>
+     */
+    private function resolveSelectedIds(Request $request): array
+    {
+        $selected = $request->input('selected');
+
+        if (! is_array($selected)) {
+            return [];
+        }
+
+        return array_values(array_unique(array_filter(
+            array_map('intval', $selected),
+            fn (int $id): bool => $id > 0,
+        )));
     }
 
     public function create(): View
@@ -80,5 +111,14 @@ class InfluencerController extends Controller
         return redirect()
             ->route('admin.influencers.index')
             ->with('status', 'Influencer berhasil dihapus.');
+    }
+
+    public function destroyAll(): RedirectResponse
+    {
+        Influencer::query()->delete();
+
+        return redirect()
+            ->route('admin.influencers.index')
+            ->with('status', 'Semua data influencer berhasil dihapus.');
     }
 }
