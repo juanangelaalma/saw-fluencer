@@ -1,10 +1,14 @@
 @php
     $user = Auth::user();
-    $dashboardActive = request()->routeIs('dashboard', 'admin.dashboard', 'manager.dashboard');
+    $dashboardActive = request()->routeIs('dashboard', 'admin.dashboard', 'manager.dashboard', 'kasi.dashboard');
     $usersActive = request()->routeIs('admin.users.*');
     $criteriaActive = request()->routeIs('admin.criteria.*');
-    $influencersActive = request()->routeIs('admin.influencers.*');
+    $influencersActive = request()->routeIs('admin.influencers.*', 'kasi.influencers.*');
+    $sawActive = request()->routeIs('kasi.saw.*');
     $historyActive = request()->routeIs('saw.history.*');
+    $canManageInfluencers = $user->canManageInfluencers();
+    $influencersRoute = $canManageInfluencers ? 'admin.influencers.index' : 'kasi.influencers.index';
+    $influencersLabel = $canManageInfluencers ? 'Manajemen Influencer' : 'Data Influencer';
 @endphp
 
 <aside class="sidebar" aria-label="{{ __('Navigasi Utama') }}">
@@ -35,12 +39,17 @@
             </a>
         @endif
 
-        @if ($user->isAdmin() && Route::has('admin.influencers.index'))
-            <a href="{{ route('admin.influencers.index') }}" @class(['active' => $influencersActive])>
-                <span>{{ __('Manajemen Influencer') }}</span>
+        @if ($user->canViewInfluencers() && Route::has($influencersRoute))
+            <a href="{{ route($influencersRoute) }}" @class(['active' => $influencersActive])>
+                <span>{{ __($influencersLabel) }}</span>
             </a>
         @endif
 
+        @if ($user->isKasi() && Route::has('kasi.saw.index'))
+            <a href="{{ route('kasi.saw.index') }}" @class(['active' => $sawActive])>
+                <span>{{ __('Perhitungan SAW') }}</span>
+            </a>
+        @endif
 
         @if (Route::has('saw.history.index'))
             <a href="{{ route('saw.history.index') }}" @class(['active' => $historyActive])>
@@ -99,12 +108,17 @@
             </a>
         @endif
 
-        @if ($user->isAdmin() && Route::has('admin.influencers.index'))
-            <a href="{{ route('admin.influencers.index') }}" @class(['pill', 'active' => $influencersActive])>
-                {{ __('Manajemen Influencer') }}
+        @if ($user->canViewInfluencers() && Route::has($influencersRoute))
+            <a href="{{ route($influencersRoute) }}" @class(['pill', 'active' => $influencersActive])>
+                {{ __($influencersLabel) }}
             </a>
         @endif
 
+        @if ($user->isKasi() && Route::has('kasi.saw.index'))
+            <a href="{{ route('kasi.saw.index') }}" @class(['pill', 'active' => $sawActive])>
+                {{ __('Perhitungan SAW') }}
+            </a>
+        @endif
 
         @if (Route::has('saw.history.index'))
             <a href="{{ route('saw.history.index') }}" @class(['pill', 'active' => $historyActive])>

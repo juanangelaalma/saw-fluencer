@@ -25,7 +25,7 @@ class UpdateUserRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:50', 'alpha_dash', Rule::unique(User::class, 'username')->ignore($managedUser)],
             'password' => ['nullable', 'string', 'min:8'],
-            'role' => ['required', Rule::in([User::ROLE_ADMIN, User::ROLE_MANAJER])],
+            'role' => ['required', Rule::in(array_keys(User::roleLabels()))],
             'is_active' => ['required', 'boolean'],
         ];
     }

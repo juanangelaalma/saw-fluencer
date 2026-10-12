@@ -93,8 +93,6 @@ it('keeps history visible after logout and login', function () {
         ->assertSee('a1');
 });
 
-
-
 it('deletes a history record', function () {
     $user = User::factory()->admin()->create();
     $calculation = SawCalculation::factory()->create();

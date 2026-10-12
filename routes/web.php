@@ -20,14 +20,18 @@ Route::get('/dashboard', function () {
     return match ($user->role) {
         User::ROLE_ADMIN => redirect()->route('admin.dashboard'),
         User::ROLE_MANAJER => redirect()->route('manager.dashboard'),
+        User::ROLE_KASI => redirect()->route('kasi.dashboard'),
         default => abort(403),
     };
 })->middleware(['auth', 'active'])->name('dashboard');
 
 Route::middleware(['auth', 'active'])->group(function () {
-    Route::view('/admin/dashboard', 'admin.dashboard')->name('admin.dashboard');
+    Route::view('/admin/dashboard', 'admin.dashboard')->middleware('admin')->name('admin.dashboard');
     Route::view('/manager/dashboard', 'manager.dashboard')->name('manager.dashboard');
+    Route::view('/kasi/dashboard', 'kasi.dashboard')->name('kasi.dashboard');
     Route::get('/admin/saw', [SawController::class, 'index'])->middleware('admin')->name('admin.saw.index');
+    Route::get('/kasi/saw', [SawController::class, 'index'])->name('kasi.saw.index');
+    Route::get('/kasi/influencers', [InfluencerController::class, 'index'])->name('kasi.influencers.index');
 
     Route::get('/saw/history', [SawHistoryController::class, 'index'])->name('saw.history.index');
     Route::post('/saw/history', [SawHistoryController::class, 'store'])->middleware('admin')->name('saw.history.store');

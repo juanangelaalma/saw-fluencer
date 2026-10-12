@@ -51,6 +51,7 @@ class AuthenticatedSessionController extends Controller
         return match ($user->role) {
             User::ROLE_ADMIN => route('admin.dashboard', absolute: false),
             User::ROLE_MANAJER => route('manager.dashboard', absolute: false),
+            User::ROLE_KASI => route('kasi.dashboard', absolute: false),
             default => route('dashboard', absolute: false),
         };
     }

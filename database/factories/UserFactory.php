@@ -48,6 +48,13 @@ class UserFactory extends Factory
         ]);
     }
 
+    public function kasi(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => User::ROLE_KASI,
+        ]);
+    }
+
     public function inactive(): static
     {
         return $this->state(fn (array $attributes) => [

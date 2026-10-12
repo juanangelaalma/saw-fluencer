@@ -21,6 +21,8 @@ class User extends Authenticatable
 
     public const ROLE_MANAJER = 'manajer';
 
+    public const ROLE_KASI = 'kasi';
+
     /**
      * @return array<string, string>
      */
@@ -29,6 +31,7 @@ class User extends Authenticatable
         return [
             self::ROLE_ADMIN => 'Admin',
             self::ROLE_MANAJER => 'Manajer',
+            self::ROLE_KASI => 'Kasi/SPV',
         ];
     }
 
@@ -40,6 +43,31 @@ class User extends Authenticatable
     public function isManajer(): bool
     {
         return $this->role === self::ROLE_MANAJER;
+    }
+
+    public function isKasi(): bool
+    {
+        return $this->role === self::ROLE_KASI;
+    }
+
+    public function isReadOnly(): bool
+    {
+        return $this->isKasi();
+    }
+
+    public function canViewInfluencers(): bool
+    {
+        return $this->isAdmin() || $this->isKasi();
+    }
+
+    public function canManageInfluencers(): bool
+    {
+        return $this->isAdmin();
+    }
+
+    public function canUseCalculationTools(): bool
+    {
+        return ! $this->isReadOnly();
     }
 
     public function roleLabel(): string

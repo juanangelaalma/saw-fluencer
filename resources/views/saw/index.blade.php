@@ -28,13 +28,15 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('Perhitungan SAW') }}</h2>
                 <p class="mt-1 text-sm text-gray-600">{{ __('Konversi rating, normalisasi matriks keputusan, dan perangkingan influencer.') }}</p>
             </div>
-            <form method="POST" action="{{ route('saw.history.store') }}" class="flex items-center gap-2">
-                @csrf
-                @foreach ($selectedIds as $id)
-                    <input type="hidden" name="selected[]" value="{{ $id }}">
-                @endforeach
-                <button type="submit" class="btn btn-primary">{{ __('Simpan ke Riwayat') }}</button>
-            </form>
+            @if (auth()->user()->isAdmin())
+                <form method="POST" action="{{ route('saw.history.store') }}" class="flex items-center gap-2">
+                    @csrf
+                    @foreach ($selectedIds as $id)
+                        <input type="hidden" name="selected[]" value="{{ $id }}">
+                    @endforeach
+                    <button type="submit" class="btn btn-primary">{{ __('Simpan ke Riwayat') }}</button>
+                </form>
+            @endif
         </div>
     </x-slot>
 
@@ -43,7 +45,11 @@
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <p class="text-sm text-gray-700">
-                        {{ __('Menghitung :selected data terpilih dari :total data influencer.', ['selected' => $totalRows, 'total' => $totalInfluencers]) }}
+                        @if ($selectedIds !== [])
+                            {{ __('Menghitung :selected data terpilih dari :total data influencer.', ['selected' => $totalRows, 'total' => $totalInfluencers]) }}
+                        @else
+                            {{ __('Menghitung seluruh :total data influencer.', ['total' => $totalRows]) }}
+                        @endif
                     </p>
                     <p class="mt-1 text-sm text-gray-600">
                         {{ __('Setiap kolom kriteria menampilkan dua nilai: angka atas adalah nilai likert 1-5 dari sub kriteria, sedangkan angka bawah adalah nilai normalisasi (R) hasil rumus SAW.') }}

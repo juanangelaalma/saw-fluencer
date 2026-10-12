@@ -16,17 +16,26 @@ class InfluencerController extends Controller
 {
     public function index(Request $request): View
     {
+        abort_unless($request->user()->canViewInfluencers(), 403);
+
         $selectedIds = $this->resolveSelectedIds($request);
 
         if ($selectedIds !== []) {
             $selectedIds = Influencer::query()->whereKey($selectedIds)->pluck('id')->all();
         }
 
+        $search = trim((string) $request->input('search', ''));
+
         $influencers = Influencer::query()
             ->with('scores.criterion')
+            ->when($search !== '', fn ($query) => $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('username', 'like', '%'.$search.'%');
+            }))
             ->orderBy('name')
             ->orderBy('username')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         if ($selectedIds !== []) {
             $influencers->appends(['selected' => $selectedIds]);
@@ -36,6 +45,7 @@ class InfluencerController extends Controller
             'criteria' => Criterion::query()->orderBy('name')->get(),
             'influencers' => $influencers,
             'selectedIds' => $selectedIds,
+            'search' => $search,
         ]);
     }
 

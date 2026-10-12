@@ -48,7 +48,6 @@ function selectionInfluencer(string $name, string $username, Collection $criteri
     return $influencer;
 }
 
-
 it('calculates only explicitly selected influencers', function () {
     $admin = User::factory()->admin()->create();
     $criteria = selectionCriteria();
@@ -123,7 +122,6 @@ it('rejects selected influencers that no longer exist', function () {
         ->assertRedirect(route('admin.influencers.index', ['selected' => [999]]))
         ->assertSessionHas('error', 'Data influencer terpilih tidak ditemukan.');
 });
-
 
 it('deletes all influencers with hapus semua', function () {
     $admin = User::factory()->admin()->create();

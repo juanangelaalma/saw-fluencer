@@ -19,43 +19,54 @@ class SawController extends Controller
             $limit = '10';
         }
 
-        $selectedIds = $this->resolveSelectedIds($request);
+        $user = $request->user();
 
-        if ($selectedIds === []) {
-            return redirect()
-                ->route('admin.influencers.index')
-                ->with('error', 'Pilih minimal dua influencer untuk dihitung.');
+        if ($user->canManageInfluencers()) {
+            $selectedIds = $this->resolveSelectedIds($request);
+
+            if ($selectedIds === []) {
+                return redirect()
+                    ->route('admin.influencers.index')
+                    ->with('error', 'Pilih minimal dua influencer untuk dihitung.');
+            }
+
+            if (count($selectedIds) === 1 && ! Influencer::query()->whereKey($selectedIds)->exists()) {
+                return redirect()
+                    ->route('admin.influencers.index', ['selected' => $selectedIds])
+                    ->with('error', 'Data influencer terpilih tidak ditemukan.');
+            }
+
+            if (count($selectedIds) === 1) {
+                return redirect()
+                    ->route('admin.influencers.index', ['selected' => $selectedIds])
+                    ->with('error', 'Pilih minimal dua influencer untuk dihitung.');
+            }
+
+            $onlyIds = $selectedIds;
+        } else {
+            $selectedIds = [];
+            $onlyIds = null;
         }
 
-        if (count($selectedIds) === 1 && ! Influencer::query()->whereKey($selectedIds)->exists()) {
-            return redirect()
-                ->route('admin.influencers.index', ['selected' => $selectedIds])
-                ->with('error', 'Data influencer terpilih tidak ditemukan.');
-        }
-
-        if (count($selectedIds) === 1) {
-            return redirect()
-                ->route('admin.influencers.index', ['selected' => $selectedIds])
-                ->with('error', 'Pilih minimal dua influencer untuk dihitung.');
-        }
-
-        $data = $service->calculate($selectedIds);
+        $data = $service->calculate($onlyIds);
         $data['limit'] = $limit;
         $data['limitOptions'] = $limitOptions;
         $data['totalRows'] = count($data['rows']);
         $data['totalInfluencers'] = Influencer::query()->count();
         $data['selectedIds'] = $selectedIds;
 
-        if ($data['totalRows'] === 0) {
-            return redirect()
-                ->route('admin.influencers.index', ['selected' => $selectedIds])
-                ->with('error', 'Data influencer terpilih tidak ditemukan.');
-        }
+        if ($user->canManageInfluencers()) {
+            if ($data['totalRows'] === 0) {
+                return redirect()
+                    ->route('admin.influencers.index', ['selected' => $selectedIds])
+                    ->with('error', 'Data influencer terpilih tidak ditemukan.');
+            }
 
-        if ($data['totalRows'] < 2) {
-            return redirect()
-                ->route('admin.influencers.index', ['selected' => $selectedIds])
-                ->with('error', 'Pilih minimal dua influencer yang masih tersedia untuk dihitung.');
+            if ($data['totalRows'] < 2) {
+                return redirect()
+                    ->route('admin.influencers.index', ['selected' => $selectedIds])
+                    ->with('error', 'Pilih minimal dua influencer yang masih tersedia untuk dihitung.');
+            }
         }
 
         if ($limit !== 'all') {

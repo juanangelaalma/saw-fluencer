@@ -78,7 +78,7 @@ it('keeps displayed criterion values aligned with their headers', function () {
         ->get(route('admin.saw.index', ['selected' => array_map(fn (Influencer $influencer) => $influencer->id, $selected)]))
         ->assertOk();
 
-    $document = new DOMDocument();
+    $document = new DOMDocument;
     $previousLibxmlState = libxml_use_internal_errors(true);
     $document->loadHTML($response->getContent());
     libxml_clear_errors();
@@ -115,8 +115,6 @@ it('keeps displayed criterion values aligned with their headers', function () {
         '5,00 → 5',
     ]);
 });
-
-
 
 it('limits selected saw rows to ten by default and allows limit option', function () {
     $user = User::factory()->admin()->create();

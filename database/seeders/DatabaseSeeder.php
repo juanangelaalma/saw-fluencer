@@ -44,5 +44,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(CriteriaSeeder::class);
+        $this->call(KasiUserSeeder::class);
     }
 }
